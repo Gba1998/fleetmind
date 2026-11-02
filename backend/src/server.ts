@@ -1,6 +1,15 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL = 'file:./fleetmind.db';
+}
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = 'fleetmind-secret-key-2026';
+}
+
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import path from 'path';
 import fs from 'fs';
 
