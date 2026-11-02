@@ -1794,6 +1794,7 @@ export default function FleetMindApp() {
                 email: String(fd.get('email') || ''),
                 role: String(fd.get('role') || 'GP'),
                 site: String(fd.get('site') || 'Siège Principal'),
+                password: String(fd.get('password') || 'fleetmind2026'),
                 active: true
               };
 
@@ -1808,8 +1809,14 @@ export default function FleetMindApp() {
               </div>
 
               <div>
-                <label className="block text-[#8995A3] mb-1 font-bold font-mono text-[11px] uppercase">Adresse E-mail</label>
+                <label className="block text-[#8995A3] mb-1 font-bold font-mono text-[11px] uppercase">Adresse E-mail (Identifiant de Connexion)</label>
                 <input required type="email" name="email" placeholder="p.kouame@sogea.ci" className="w-full bg-[#08111F] border border-[#8995A3]/30 rounded p-2.5 text-[#F4F6F8] font-mono focus:border-[#FF8A00] outline-none" />
+              </div>
+
+              <div>
+                <label className="block text-[#8995A3] mb-1 font-bold font-mono text-[11px] uppercase">Mot de Passe Initial</label>
+                <input type="text" name="password" defaultValue="fleetmind2026" className="w-full bg-[#08111F] border border-[#8995A3]/30 rounded p-2.5 text-[#F4F6F8] font-mono focus:border-[#FF8A00] outline-none" />
+                <span className="text-[10px] text-[#8995A3] mt-0.5 block">Mot de passe provisoire transmis au collaborateur</span>
               </div>
 
               <div className="grid grid-cols-2 gap-3">

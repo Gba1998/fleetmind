@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import bcrypt from 'bcryptjs';
 import { prisma } from '../db.js';
 
 const router = Router();
@@ -25,15 +26,19 @@ router.get('/', async (req, res) => {
 // CREATE user
 router.post('/', async (req, res) => {
   try {
-    const { name, email, role, site, tenantId, code } = req.body;
+    const { name, email, role, site, tenantId, code, password } = req.body;
     if (!name || !email || !role || !site) {
       return res.status(400).json({ error: 'name, email, role, and site are required' });
     }
+    const cleanEmail = email.toLowerCase().trim();
+    const hashedPassword = bcrypt.hashSync(password?.trim() || 'fleetmind2026', 10);
+
     const user = await prisma.user.create({
       data: {
         code: code || `USR-${Date.now().toString().slice(-4)}`,
         name,
-        email,
+        email: cleanEmail,
+        password: hashedPassword,
         role,
         site,
         tenantId: tenantId || null,
