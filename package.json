@@ -1,0 +1,20 @@
+{
+  "name": "fleetmind-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plateforme B2B SaaS de Gestion de Flotte et Opérations Minières",
+  "scripts": {
+    "install:all": "npm --prefix frontend install && npm --prefix backend install",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:backend": "npm --prefix backend run prisma:generate && npm --prefix backend run build",
+    "build": "npm --prefix frontend install && npm --prefix frontend run build && npm --prefix backend install && npm --prefix backend run prisma:generate && npm --prefix backend run build",
+    "start": "node backend/dist/server.js"
+  },
+  "keywords": [
+    "fleet-management",
+    "mining",
+    "tco",
+    "telematics"
+  ],
+  "author": "FleetMind Team"
+}

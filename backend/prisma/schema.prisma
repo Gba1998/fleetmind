@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id         String      @id @default(cuid())
+  code       String      @unique
+  name       String
+  country    String
+  currency   String      @default("FCFA")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  users      User[]
+  equipments Equipment[]
+  rentals    Rental[]
+}
+
+model User {
+  id        String   @id @default(cuid())
+  code      String?  @unique
+  name      String
+  email     String   @unique
+  password  String?
+  role      String   // 'ADM-E', 'GP', 'RM', 'RC', 'COND', 'DIR', 'ADM-PF'
+  site      String
+  active    Boolean  @default(true)
+  tenantId  String?
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Equipment {
+  id                String             @id
+  name              String
+  type              String             // 'ENGIN_BTP', 'CAMION', 'VEHICULE_LEGER', 'GENERATEUR'
+  immat             String             @unique
+  counterType       String             // 'HOURS', 'KM'
+  counterValue      Float
+  site              String
+  status            String             // 'EN_SERVICE', 'EN_MAINTENANCE', 'EN_PANNE'
+  driver            String?
+  avgCons           String?
+  imageUrl          String?
+  brand             String?
+  model             String?
+  year              Int?
+  tenantId          String?
+  tenant            Tenant?            @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  assignments       Assignment[]
+  maintenanceOrders MaintenanceOrder[]
+  gpsTrack          GpsTrack?
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+}
+
+model Assignment {
+  id          String     @id
+  vehicleId   String
+  vehicleName String
+  driver      String
+  color       String?
+  startHour   Int
+  endHour     Int
+  day         String
+  equipment   Equipment? @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  createdAt   DateTime   @default(now())
+}
+
+model MaintenanceOrder {
+  id          String     @id
+  vehicleId   String
+  vehicleName String
+  type        String     // 'CORRECTIF', 'PANNE', 'PREVENTIF'
+  title       String
+  status      String     // 'EN_COURS', 'ATTENTE_PIECE', 'TERMINE'
+  priority    String     // 'BASSE', 'MOYENNE', 'HAUTE', 'CRITIQUE'
+  cost        Float
+  tech        String
+  date        String
+  equipment   Equipment? @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model GpsTrack {
+  id          String     @id
+  immat       String
+  name        String
+  speed       Float
+  status      String     // 'ARRÊT_MOTEUR_ALLUMÉ', 'EN_DEPLACEMENT', 'A_L_ATELIER'
+  lat         String
+  lng         String
+  fuel        String
+  lastUpdate  String
+  equipmentId String?    @unique
+  equipment   Equipment? @relation(fields: [equipmentId], references: [id], onDelete: SetNull)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Rental {
+  id        String   @id
+  supplier  String
+  equipment String
+  dailyRate Float
+  totalCost Float
+  startDate String
+  endDate   String
+  status    String   // 'EN_COURS', 'TERMINE'
+  tenantId  String?
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+}
+
+model FleetDocument {
+  id         String   @id
+  vehicle    String
+  docType    String   // 'Assurance Flotte', 'Visite Technique', 'Certificat Conformité BTP'
+  docNo      String
+  expiryDate String
+  status     String   // 'VALID', 'ALERT_EXPIRING', 'EXPIRED'
+  createdAt  DateTime @default(now())
+}
+
+model FuelLog {
+  id        String   @id
+  date      String
+  vehicle   String
+  qty       String
+  amount    Float
+  station   String
+  driver    String
+  anomaly   Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  sender    String   // 'ai', 'user'
+  text      String
+  createdAt DateTime @default(now())
+}

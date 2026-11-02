@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: fleetmind-operations
+    env: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm run build
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        value: file:./prisma/fleetmind.db
+      - key: JWT_SECRET
+        generateValue: true

@@ -1,0 +1,22 @@
+{
+  "short_name": "FleetMind",
+  "name": "FleetMind Operations - Supervision Flotte & Carrière",
+  "description": "Plateforme industrielle de gestion d'équipements, télématique GPS et exploitation minière hors-ligne.",
+  "icons": [
+    {
+      "src": "/images/mining-cycle/scene1-loading.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/images/fleetmind-mining-truck.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#08111F",
+  "theme_color": "#08111F",
+  "display": "standalone",
+  "orientation": "any"
+}
