@@ -5,7 +5,7 @@ services:
     plan: free
     region: frankfurt
     buildCommand: npm run build
-    startCommand: npm start
+    startCommand: cd backend && node dist/server.js
     autoDeploy: true
     envVars:
       - key: NODE_ENV
@@ -13,6 +13,6 @@ services:
       - key: PORT
         value: 10000
       - key: DATABASE_URL
-        value: file:./prisma/fleetmind.db
+        value: file:./fleetmind.db
       - key: JWT_SECRET
         generateValue: true
